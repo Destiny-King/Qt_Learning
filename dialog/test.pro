@@ -17,15 +17,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     finddialog.cpp \
+    gotocelldialog.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     finddialog.h \
+    gotocelldialog.h \
     mainwindow.h
 
 FORMS += \
     finddialog.ui \
+    gotocelldialog.ui \
     mainwindow.ui
 
 # Default rules for deployment.

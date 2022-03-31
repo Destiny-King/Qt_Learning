@@ -1,7 +1,9 @@
 //1、spinbox、sliderbox
 //#include "mainwindow.h"
 //2、创建对话框
-#include "finddialog.h"
+//#include "finddialog.h"
+//3、GoToCell
+#include "gotocelldialog.h"
 
 #include <QApplication>
 #include <QSpinBox>
@@ -17,8 +19,14 @@ int main(int argc, char *argv[])
 //    w.setWindowTitle("Enter your age:");
 //    w.resize(800,600);
 
-    FindDialog fd;
-    fd.show();
+    //2、创建对话框
+//    FindDialog fd;
+//    fd.setWindowTitle("对话框");
+//    fd.show();
+
+    //3、GoToCell
+    GoToCellDialog dialog;
+    dialog.show();
 
     return a.exec();
 }
