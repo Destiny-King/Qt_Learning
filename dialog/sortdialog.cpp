@@ -30,6 +30,11 @@ void SortDialog::setColumnRange(QChar first,QChar last)
     }
 }
 
+void SortDialog::setSpreadsheet(Spreadsheet *spreadsheet)
+{
+
+}
+
 SortDialog::~SortDialog()
 {
 
