@@ -15,3 +15,5 @@
 6.media：QT多媒体练手项目。
 
 7.tools：小工具项目。
+
+8.network:QT网络编程。
