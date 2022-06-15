@@ -12,7 +12,7 @@
 
 5.QRegExp类使用正则表达式提供模式匹配。
 
-6.control：QT按钮控件。
+6.control：QT按钮控件，电池控件。
 
 7.media：QT多媒体练手项目。
 
