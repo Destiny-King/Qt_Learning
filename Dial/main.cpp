@@ -1,78 +1,161 @@
-#include "graphics.h"
-#include "time.h"
-#include <iostream>
+#include "tools.hpp"
+#include <mmsystem.h>
+#include <stdio.h>
+#include <time.h>
 
-#define WIN_SIZE 500            //çª—å£å¤§å°
-#define WIN_HALF (WIN_SIZE / 2) //çª—å£ä¸€åŠ
+/*
+        1,ÎÄ±¾×ÖÌåÉèÖÃ
+        2,Í¼Æ¬¶¯»­Ğ§¹û
+        3,»æÖÆ±íÅÌ
+*/
 
-IMAGE spaceMan[59]; //å¤ªç©ºäººå›¾ç‰‡
-void loadImg() {
-  //åŠ è½½å›¾ç‰‡
-  char fileName[50] = {0};
-  for (int i = 0; i < 59; ++i) {
-    sprintf_s(fileName, "../images/human (%d).jpg", i + 2);
-    //åŠ è½½å›¾ç‰‡
-    loadimage(spaceMan + i, fileName, 140, 130);
-  }
-}
+#define WIN_SIZE 500
+#define WIN_HALF (WIN_SIZE / 2) //´°¿ÚµÄÒ»°ë
+IMAGE spaceMan[59];
+IMAGE other[6];
+const char *week[7] = {"ÈÕ", "Ò»", "¶ş", "Èı", "ËÄ", "Îå", "Áù"};
 
-void setTextStyle(int h, int w, const char *faceName) {
+void setTextStyle(int height, int width, const char *faceName) {
   LOGFONT f = {0};
-  f.lfHeight = h;
-  f.lfWidth = w;
+  f.lfHeight = height;
+  f.lfWidth = width;
+  f.lfQuality = ANTIALIASED_QUALITY;
   strcpy(f.lfFaceName, faceName);
   settextstyle(&f);
 }
 
-//å¤ªç©ºäººåŠ¨ç”»æ•ˆæœ
-void animation() {
-  static DWORD t1 = clock(); //åªåˆå§‹åŒ–ä¸€æ¬¡
-  DWORD t2 = clock(); //è·å–ç¨‹åºè¿è¡Œåˆ°è°ƒç”¨è¯¥å‡½æ•°æ‰€ç»è¿‡çš„æ¯«ç§’æ•°
-  //æŠŠå›¾ç‰‡è¾“å‡ºåˆ°çª—å£ä¸Šé¢
-  static int i = 0;
-  if (t2 - t1 > 20) {
-    //è´´å›¾
-    putimage(150, 150, spaceMan + i);
-    t1 = t2;
+//¼ÓÔØÍ¼Æ¬
+void loadImg() {
+  mciSendString("open ./images/1.mp3", NULL, 0, NULL);
+  mciSendString("play ./images/1.mp3 repeat", NULL, 0, NULL);
+
+  char fileName[50] = {0};
+  for (int i = 0; i < 59; i++) {
+    sprintf_s(fileName, "./images/human (%d).jpg", i + 2);
+    loadimage(spaceMan + i, fileName, 140, 130);
   }
-  i = (i + 1) % 59;
+  loadimage(other + 0, "./images/other1.png", 70, 70);
+  loadimage(other + 1, "./images/other2.png", 60, 60);
+  loadimage(other + 2, "./images/other3.png", 55, 55);
+  loadimage(other + 3, "./images/other4.png", 30, 30);
+  loadimage(other + 4, "./images/other5.png", 30, 30);
+  loadimage(other + 5, "./images/other6.png", 60, 60);
 }
 
-//å…¶ä»–ç•Œé¢ç»˜åˆ¶
+//Ì«¿ÕÈËĞı×ª¶¯»­
+void animation() {
+  static int index = 0; //[0~59)
+  putimage(175, 210, spaceMan + index);
+
+  static DWORD t1;
+  DWORD t2 = clock();
+  if (t2 - t1 > 20) {
+    index = (index + 1) % 59;
+    t1 = t2;
+  }
+}
+
 void gameDraw() {
-  setbkcolor(RGB(223, 230, 240)); //è®¾ç½®èƒŒæ™¯é¢œè‰²
-  cleardevice();                  //æ¸…ç©ºç»˜å›¾è®¾å¤‡
-  //ç»˜åˆ¶è¡¨ç›˜
 
-  //æ˜¾ç¤ºåŠ¨æ€æ—¶é—´
-  //è·å–å½“å‰ç³»ç»Ÿæ—¶é—´
-  time_t curTime = time(NULL);
-  printf("%lld\n", curTime);
-  struct tm *humanTime = localtime(&curTime);
+  setbkcolor(RGB(223, 230, 240));
+  cleardevice();
+  //»æÖÆ±íÅÌ
+  setlinecolor(RGB(68, 68, 68));
+  setlinestyle(PS_SOLID, 40);
+  setfillcolor(RGB(223, 230, 240));
+  fillellipse(0, 0, WIN_SIZE, WIN_SIZE);
 
-  char buf[40] = {0};
-  sprintf_s(buf, "%d:%d", humanTime->tm_hour, humanTime->tm_min);
-  outtextxy(105, 120, buf);
+  //»æÖÆÏßÌõ
+  setlinestyle(PS_SOLID, 4);
+  setlinecolor(BLACK);
+  //×îÉÏÃæÊúÏß
+  line(WIN_HALF - 30, 20, WIN_HALF - 30, 130);
+  //ºáÏßx2
+  line(WIN_HALF - 195, WIN_HALF - 120, WIN_HALF + 195, WIN_HALF - 120);
+  line(WIN_HALF - 195, WIN_HALF + 120, WIN_HALF + 195, WIN_HALF + 120);
+  //ÏÂÃæÏßÌõx3
+  line(WIN_HALF + 80, WIN_HALF + 120, WIN_HALF + 80, WIN_HALF + 175);
+  line(WIN_HALF + 80, WIN_HALF + 175, WIN_HALF - 60, WIN_HALF + 175);
+  line(WIN_HALF - 60, WIN_HALF + 175, WIN_HALF - 60, WIN_HALF + 175 + 48);
 
-  sprintf_s(buf, "%d", humanTime->tm_sec);
-  outtextxy(335, 160, buf);
+  setbkmode(TRANSPARENT);
+  //×óÉÏ¿ÕÆøÊª¶È90%
+  setTextStyle(55, 23, "Arial");
+  settextcolor(BLACK);
+  outtextxy(WIN_HALF - 155, 75, "90%");
+  drawImg(other + 5, WIN_HALF - 90, 35); //»ğ¼ı
+  //ÓÒÉÏ
+  setTextStyle(25, 15, "ºÚÌå");
+  outtextxy(WIN_HALF - 25, 35, "¿ÕÆøÁ¼ºÃ");
+
+  setTextStyle(25, 13, "ËÎÌå");
+  outtextxy(WIN_HALF - 25, 65, "ÇçÌì");
+  outtextxy(WIN_HALF - 25, 95, "25¡æ");
+  outtextxy(WIN_HALF + 38, 65, "26¡ã");
+  outtextxy(WIN_HALF + 38, 95, "17¡ã");
+  drawImg(other + 4, WIN_HALF + 73, 60);  //ÉÏÃæµÄ¼ıÍ·
+  drawImg(other + 3, WIN_HALF + 73, 90);  //ÏÂÃæµÄ¼ıÍ·
+  drawImg(other + 1, WIN_HALF + 105, 70); //Ì«Ñô
+
+  // ÏÂ²¿·Ö
+  setTextStyle(37, 17, "ËÎÌå");
+  outtextxy(100, WIN_HALF + 130, "Ë¯Ãß");
+  outtextxy(WIN_HALF + 90, WIN_HALF + 130, "¾àÀë");
+
+  setTextStyle(40, 15, "Arial");
+  outtextxy(185, WIN_HALF + 125, "7h30m");
+  outtextxy(215, WIN_HALF + 180, "9.88km");
+
+  //ÖĞ¼ä
+  //ĞÄÂÊ
+  setTextStyle(25, 13, "ËÎÌå");
+  outtextxy(60, WIN_HALF + 30, "80~128");
+  drawImg(&other[0], 65, WIN_HALF + 50); //ĞÄÂÊÍ¼
+
+  setTextStyle(40, 15, "Arial");
+  outtextxy(135, WIN_HALF + 60, "92");
+  // ²½Êı
+  drawImg(&other[2], WIN_HALF + 65, WIN_HALF + 65);
+  outtextxy(WIN_HALF + 125, WIN_HALF + 75, "9527");
+
+  //Ê±¼ä¡¢ÈÕÆÚÏà¹Ø
+  time_t timep = time(NULL);        //»ñÈ¡µ±Ç°Ê±¼ä
+  struct tm *p = localtime(&timep); //°ÑÊ±¼ä×ª³É¸ñÊ½»¯Ê±¼ä
+
+  setTextStyle(25, 12, "ËÎÌå");
+  outtextxy(WIN_HALF + 110, WIN_HALF - 20, "ÈıÔÂÈıÊ®Ò»");
+  char fileName[40] = {0};
+  sprintf_s(fileName, "ÖÜ%s %d-%d", week[p->tm_wday], p->tm_mon + 1,
+            p->tm_mday);
+  outtextxy(WIN_HALF + 110, WIN_HALF + 10, fileName);
+
+  // »ñÈ¡×ÖÌå
+  setTextStyle(100, 40, "Arial");
+  char szBuf[40] = {0};
+  sprintf_s(szBuf, "%d:%02d", p->tm_hour, p->tm_min);
+  outtextxy(105, 120, szBuf);
+  // Ãë
+  setTextStyle(55, 23, "Arial");
+  sprintf(szBuf, "%02d", p->tm_sec);
+  outtextxy(335, 160, szBuf);
 }
 
 int main() {
-  //åˆ›å»ºå›¾å½¢çª—å£
-  initgraph(500, 500, EW_SHOWCONSOLE);
+  initgraph(WIN_SIZE, WIN_SIZE /*,EW_SHOWCONSOLE*/);
+  SetWindowNewStyle(WIN_SIZE, WIN_SIZE);
 
-  setbkcolor(RGB(223, 230, 240)); //è®¾ç½®èƒŒæ™¯é¢œè‰²
-  cleardevice();                  //æ¸…ç©ºç»˜å›¾è®¾å¤‡
-  //è®¾ç½®æ–‡å­—æ ·å¼
-  settextcolor(BLACK);
-  setTextStyle(55, 23, "Arial");
-  outtextxy(50, 50, "90%");
   loadImg();
+
+  BeginBatchDraw(); //Ë«»º³å
   while (true) {
-    animation();
     gameDraw();
+    animation();
+
+    mouseEvent();
+
+    FlushBatchDraw();
   }
+  EndBatchDraw();
 
   getchar();
   return 0;

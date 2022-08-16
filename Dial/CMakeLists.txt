@@ -1,12 +1,11 @@
 cmake_minimum_required(VERSION 3.17)
 project(Dial)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
-set(EasyX_DIR D:/Software/Tools/Cpp/easyx4mingw_20220610)
+set(EasyX_DIR C:/Software/mingw64)
 include_directories(${EasyX_DIR}/include)
-link_directories(${EasyX_DIR}/lib64)
+link_directories(${EasyX_DIR}/lib)
+link_libraries(libeasyx.a libgdi32.a libole32.a winmm.a)
 
-link_libraries(libeasyx.a libgdi32.a libole32.a)
-
-add_executable(Dial main.cpp)
+add_executable(Dial main.cpp tools.hpp)
