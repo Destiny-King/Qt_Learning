@@ -26,20 +26,20 @@ void setTextStyle(int height, int width, const char *faceName) {
 
 //º”‘ÿÕº∆¨
 void loadImg() {
-  mciSendString("open ./images/1.mp3", NULL, 0, NULL);
-  mciSendString("play ./images/1.mp3 repeat", NULL, 0, NULL);
+  mciSendString("open ../images/1.mp3", NULL, 0, NULL);
+  mciSendString("play ../images/1.mp3 repeat", NULL, 0, NULL);
 
   char fileName[50] = {0};
   for (int i = 0; i < 59; i++) {
-    sprintf_s(fileName, "./images/human (%d).jpg", i + 2);
+    sprintf_s(fileName, "../images/human (%d).jpg", i + 2);
     loadimage(spaceMan + i, fileName, 140, 130);
   }
-  loadimage(other + 0, "./images/other1.png", 70, 70);
-  loadimage(other + 1, "./images/other2.png", 60, 60);
-  loadimage(other + 2, "./images/other3.png", 55, 55);
-  loadimage(other + 3, "./images/other4.png", 30, 30);
-  loadimage(other + 4, "./images/other5.png", 30, 30);
-  loadimage(other + 5, "./images/other6.png", 60, 60);
+  loadimage(other + 0, "../images/other1.png", 70, 70);
+  loadimage(other + 1, "../images/other2.png", 60, 60);
+  loadimage(other + 2, "../images/other3.png", 55, 55);
+  loadimage(other + 3, "../images/other4.png", 30, 30);
+  loadimage(other + 4, "../images/other5.png", 30, 30);
+  loadimage(other + 5, "../images/other6.png", 60, 60);
 }
 
 //Ã´ø’»À–˝◊™∂Øª≠
