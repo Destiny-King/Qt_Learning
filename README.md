@@ -11,3 +11,9 @@ mobileCode.exe 要查询的电话号码
 输出结果。
 
 2.Dial：华为太空人表单示例。
+
+3.openCV：OpenCV小项目。
+
+4.SDL2：SDL2小项目。
+
+5.FFmpeg：FFmpeg小项目。
